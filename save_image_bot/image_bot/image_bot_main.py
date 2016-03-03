@@ -15,10 +15,13 @@ Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
 
+import urllib
+
 from telegram import Updater
 import logging
 
-from django.conf import settings
+#from django.conf import settings
+APITOKEN='201647174:AAGhGU9ysAh4i2X8FfbpElS6Rjn37pO3GnM'
 
 # Enable logging
 logging.basicConfig(
@@ -26,6 +29,9 @@ logging.basicConfig(
     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
+
+#help_text = urllib.quote_plus("/random - Random pic \n /randomvideo - Random video")
+help_text = "/random - Random pic\n/randomvideo - Random video\n/caso - comando senza senso"
 
 
 # Define a few command handlers. These usually take the two arguments bot and
@@ -35,7 +41,20 @@ def start(bot, update):
 
 
 def help(bot, update):
-    bot.sendMessage(update.message.chat_id, text='Help!')
+    #bot.sendMessage(update.message.chat_id, text='Help!')
+    bot.sendMessage(update.message.chat_id, text=help_text)
+
+
+def randomvideo(bot, update):
+    bot.sendMessage(update.message.chat_id, text='Maiale')
+
+
+def random(bot, update):
+    bot.sendMessage(update.message.chat_id, text='Maiale piccolo')
+
+
+def caso(bot, update):
+    bot.sendMessage(update.message.chat_id, text='Non comando')
 
 
 def echo(bot, update):
@@ -48,7 +67,8 @@ def error(bot, update, error):
 
 def main():
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater(settings.APITOKEN)
+    #updater = Updater(settings.APITOKEN)
+    updater = Updater(APITOKEN)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
@@ -56,6 +76,9 @@ def main():
     # on different commands - answer in Telegram
     dp.addTelegramCommandHandler("start", start)
     dp.addTelegramCommandHandler("help", help)
+    dp.addTelegramCommandHandler("randomvideo", randomvideo)
+    dp.addTelegramCommandHandler("random", random)
+    dp.addTelegramCommandHandler("caso", caso)
 
     # on noncommand i.e message - echo the message on Telegram
     dp.addTelegramMessageHandler(echo)
